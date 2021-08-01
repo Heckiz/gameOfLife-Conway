@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import Cell from './Cell';
-import { useSelector } from 'react-redux'
+import { newCellGrid } from "../../app/gameSlice";
+import { useSelector, useDispatch } from 'react-redux'
 
-function newEmptyGrid(gameConfig) {
-    const grid = [];
-    for (let i = 0; i < gameConfig.rows; i++) {
-        grid.push(Array.from(Array(gameConfig.cols), () => false));
-    }
-
-    return grid;
-};
 export default function CellGrid() {
 
 
-    const { gameConfig } = useSelector(state => state.gameData);
+    const { gameConfig, cellGrid } = useSelector(state => state.gameData);
 
-    const [grid, setGrid] = useState(newEmptyGrid(gameConfig));
-    console.log(grid)
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(newCellGrid(gameConfig));
+    }, [])
 
     return (
         <div style={{
             display: "grid",
-          gridTemplateColumns: `repeat(${gameConfig.cols}, 35px)`
+            gridTemplateColumns: `repeat(${gameConfig.cols}, 35px)`
         }}>
             {
-               grid.map((rows, rowIndex) => rows.map((cols, colIndex) => (
-                   <Cell 
-                   key={`${rowIndex,colIndex}`}
+                cellGrid.map((rows, rowIndex) => rows.map((cols, colIndex) => (
 
-                   />
-               )))
+                    <Cell
+                        key={`${rowIndex, colIndex}`}
+                        rowIndex={rowIndex}
+                        colIndex={colIndex}
+                        life={cols}
+                        dispatch={dispatch}
+                    />
+
+                )))
             }
         </div>
     )
