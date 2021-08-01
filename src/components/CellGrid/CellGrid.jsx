@@ -8,6 +8,7 @@ export default function CellGrid() {
 
     const { gameConfig, cellGrid } = useSelector(state => state.gameData);
 
+    
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(newCellGrid(gameConfig));
