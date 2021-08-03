@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import Cell from './Cell';
 import { newCellGrid } from "../../app/gameSlice";
 import { useSelector, useDispatch } from 'react-redux'
-import { survivalRules } from '../../app/helpers';
 
 export default function CellGrid() {
 
 
-    const { gameConfig, cellGrid, running } = useSelector(state => state.gameData);
+    const { gameConfig, cellGrid } = useSelector(state => state.gameData);
 
 
     const dispatch = useDispatch();
@@ -15,15 +14,14 @@ export default function CellGrid() {
     useEffect(() => {
         dispatch(newCellGrid(gameConfig));
     }, [])
+    
+
 
     return (
         <div style={{
             display: "grid",
             gridTemplateColumns: `repeat(${gameConfig.cols}, 35px)`
         }}>
-            {
-                 running && survivalRules(cellGrid)
-            }
             {
                
                 cellGrid.map((rows, rowIndex) => rows.map((cols, colIndex) => (

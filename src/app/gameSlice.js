@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { survivalRules } from './helpers';
 
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     gameConfig: {
-      rows: 20,
-      cols: 20
+      rows: 50,
+      cols: 50
     },
     cellGrid: [],
     running: false,
@@ -39,11 +40,22 @@ export const gameSlice = createSlice({
     handleRunning: state => {
       state.running = !state.running;
 
+    },
+    playSimulation: state => {
+      const { cellGrid, gameConfig } = state;
+      const { cols: climit, rows: rlimit } = gameConfig;
+
+      let nextGeneration = cellGrid;
+      cellGrid.map((rows, rowIndex) => rows.map((cols, colIndex) => {
+        nextGeneration[rowIndex][colIndex] = survivalRules(cellGrid, colIndex, rowIndex, climit, rlimit, cols);
+      }))
+      console.log(nextGeneration);
+
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { newCellGrid, handleLifeCell, handleRunning } = gameSlice.actions
+export const { newCellGrid, handleLifeCell, handleRunning, playSimulation } = gameSlice.actions
 
 export default gameSlice.reducer
