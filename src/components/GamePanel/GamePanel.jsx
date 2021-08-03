@@ -12,12 +12,12 @@ export default function GamePanel() {
                 onClick={() => dispatch(handleRunning())}
             >
                 {
-                    running ? <h3>INICIAR</h3> : <h3>DETENER</h3>
+                    running ? <h3>PAUSE</h3> : <h3>START</h3>
                 }
             </button>
 
             <button onClick={() => dispatch(newCellGrid(gameConfig))}>
-                <h3>REINICIAR</h3>
+                <h3>RESTART</h3>
             </button>
 
         </div>
