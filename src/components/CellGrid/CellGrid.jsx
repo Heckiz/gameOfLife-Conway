@@ -16,11 +16,10 @@ export default function CellGrid() {
     }, [])
     
 
-
     return (
         <div style={{
             display: "grid",
-            gridTemplateColumns: `repeat(${gameConfig.cols}, 35px)`
+            gridTemplateColumns: `repeat(${gameConfig.cols}, 25px)`,
         }}>
             {
                

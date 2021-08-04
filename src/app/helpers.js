@@ -10,8 +10,8 @@ export const survivalRules = (grid, rlimit, climit) => {
         [1, 0],
         [-1, 0]
     ];
+    
     const nextGeneration = [];
-
     grid.map((rows, rowIndex) =>
         rows.map((cols, colIndex) => {
 
@@ -37,4 +37,23 @@ export const survivalRules = (grid, rlimit, climit) => {
         }))
 
     return nextGeneration;
+}
+
+
+export const resizeGrid = (grid, size) => {
+
+    const newGrid = [];
+    for (let i = 0; i < size; i++) {
+        newGrid.push(Array.from(Array(parseInt(size) + 20), () => false));
+    }
+    grid.map((rows, rowsIndex) =>
+        rows.map((cols, colsIndex) => {
+            try {
+                grid[rowsIndex][colsIndex] ? newGrid[rowsIndex][colsIndex] = true : false;
+            } catch (error) {
+                console.log('some cells died after resizing the grid')
+            }
+        }))
+
+    return newGrid;
 }

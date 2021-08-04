@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { survivalRules } from './helpers';
+import { resizeGrid, survivalRules } from './helpers';
 
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     gameConfig: {
-      rows: 25,
-      cols: 25
+      rows: 10,
+      cols: 30
     },
     cellGrid: [],
     running: false,
@@ -18,15 +18,19 @@ export const gameSlice = createSlice({
     // which detects changes to a "draft state" and produces a brand new
     // immutable state based off those changes
 
-    newCellGrid: (state, action) => {
-
-      const { rows, cols } = action.payload;
+    newCellGrid: state => {
+      const { rows, cols } = state.gameConfig;
       const grid = [];
       for (let i = 0; i < rows; i++) {
-        grid.push(Array.from(Array(cols), () => false));
+        grid[i] = Array.from(Array(cols), () => false);
       }
-
       state.cellGrid = grid;
+    },
+
+    handleGrid: (state, action) => {
+      state.cellGrid = resizeGrid(state.cellGrid, action.payload);
+      state.gameConfig.rows = action.payload
+      state.gameConfig.cols = parseInt(action.payload) + 20;
     },
 
     handleLifeCell: (state, action) => {
@@ -37,16 +41,16 @@ export const gameSlice = createSlice({
 
       state.cellGrid = newGrid;
     },
+
     handleRunning: state => {
       state.running = !state.running;
 
     },
     playSimulation: state => {
       const { cellGrid, gameConfig } = state;
-      const { cols, rows} = gameConfig;
-
+      const { cols, rows } = gameConfig;
+      let nextGeneration = survivalRules(cellGrid, parseInt(rows), parseInt(cols));
       let newGrid = [];
-      let nextGeneration = survivalRules(cellGrid, rows, cols);
       let key = 0;
 
       for (let i = 0; i < rows; i++) {
@@ -59,6 +63,6 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { newCellGrid, handleLifeCell, handleRunning, playSimulation } = gameSlice.actions
+export const { newCellGrid, handleLifeCell, handleRunning, handleGrid, playSimulation } = gameSlice.actions
 
 export default gameSlice.reducer

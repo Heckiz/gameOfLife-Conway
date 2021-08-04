@@ -1,5 +1,5 @@
 import React from 'react'
-import { handleRunning, newCellGrid, playSimulation } from "../../app/gameSlice";
+import { handleGrid, handleRunning, newCellGrid, playSimulation } from "../../app/gameSlice";
 import { useDispatch, useSelector } from 'react-redux'
 import useInterval from '../../common/useInterval';
 
@@ -9,6 +9,8 @@ export default function GamePanel() {
     const dispatch = useDispatch();
     
     useInterval(()=> dispatch(playSimulation()), running ? 300 : null )
+
+
     return (
         <div>
             <button style={{ margin: "20px" }}
@@ -24,6 +26,9 @@ export default function GamePanel() {
             <button onClick={() => dispatch(newCellGrid(gameConfig))}>
                 <h3>RESTART</h3>
             </button>
+
+            <h3>Grid</h3>
+            <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="10" max="40" step="5" defaultValue="10"/>
 
         </div>
     )
