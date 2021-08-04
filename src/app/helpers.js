@@ -1,27 +1,40 @@
 
-export const survivalRules = (grid, colIndex, rowIndex, climit, rlimit, alive) => {
-    let neighbours = 0;
+export const survivalRules = (grid, rlimit, climit) => {
+    const neighboursPositions = [
+        [0, 1],
+        [0, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1],
+        [-1, -1],
+        [1, 0],
+        [-1, 0]
+    ];
+    const nextGeneration = [];
 
-    if (colIndex != 0 && grid[rowIndex][colIndex - 1]) neighbours++;
-    if ((climit - 1) != colIndex && grid[rowIndex][colIndex + 1]) neighbours++;
-    if (rowIndex != 0 && grid[rowIndex - 1][colIndex]) neighbours++;
-    if ((rlimit - 1) != rowIndex && grid[rowIndex + 1][colIndex]) neighbours++;
-    if (colIndex != 0 && rowIndex != 0 && grid[rowIndex - 1][colIndex - 1]) neighbours++;
-    if ((rlimit - 1) != rowIndex && (climit - 1) != colIndex && grid[rowIndex + 1][colIndex + 1]) neighbours++;
-    if ((rlimit - 1) != rowIndex && colIndex != 0 && grid[rowIndex + 1][colIndex - 1]) neighbours++;
-    if (rowIndex != 0 && (climit - 1) != colIndex && grid[rowIndex - 1][colIndex + 1]) neighbours++;
+    grid.map((rows, rowIndex) =>
+        rows.map((cols, colIndex) => {
 
-    console.log('row:', rowIndex, 'col:', colIndex, 'neighbours', neighbours)
+            let neighbours = 0;
 
-    if (!alive && neighbours === 3) {
-        return true
-    }
-    else if (alive && neighbours < 2 || alive && neighbours > 3) {
-        return false
-    } else {
-        grid[rowIndex][colIndex]
-    }
+            neighboursPositions.forEach(([x, y]) => {
+                const newRow = (rowIndex + x + rlimit) % rlimit
+                const newCol = (colIndex + y + climit) % climit
 
+                if (grid[newRow][newCol] == true) neighbours++
+            })
 
+            let alive = cols;
+
+            if (!alive && neighbours === 3) {
+                nextGeneration.push(true)
+            }
+            else if (alive && neighbours < 2 || alive && neighbours > 3) {
+                nextGeneration.push(false)
+            } else {
+                nextGeneration.push(grid[rowIndex][colIndex])
+            }
+        }))
+
+    return nextGeneration;
 }
-

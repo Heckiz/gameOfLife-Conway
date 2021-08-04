@@ -5,8 +5,8 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     gameConfig: {
-      rows: 50,
-      cols: 50
+      rows: 25,
+      cols: 25
     },
     cellGrid: [],
     running: false,
@@ -43,14 +43,17 @@ export const gameSlice = createSlice({
     },
     playSimulation: state => {
       const { cellGrid, gameConfig } = state;
-      const { cols: climit, rows: rlimit } = gameConfig;
+      const { cols, rows} = gameConfig;
 
-      let nextGeneration = cellGrid;
-      cellGrid.map((rows, rowIndex) => rows.map((cols, colIndex) => {
-        nextGeneration[rowIndex][colIndex] = survivalRules(cellGrid, colIndex, rowIndex, climit, rlimit, cols);
-      }))
-      console.log(nextGeneration);
+      let newGrid = [];
+      let nextGeneration = survivalRules(cellGrid, rows, cols);
+      let key = 0;
 
+      for (let i = 0; i < rows; i++) {
+        newGrid.push(Array.from(Array(cols), () => nextGeneration[key++]));
+      }
+
+      state.cellGrid = newGrid;
     }
   }
 })
