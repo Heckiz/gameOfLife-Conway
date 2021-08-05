@@ -3667,6 +3667,6 @@ export const oscillatorsData = () => {
             ]
         ],
         "running": false,
-        "generations": 67
+        "generations": 0
     }
 }

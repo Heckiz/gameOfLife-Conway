@@ -8,8 +8,7 @@ function App() {
 
   return (
     <div>
-
-      <h1>The Game of Life - Conway</h1>
+      <h1 style={{ textAlign: "center" }}>The Game of Life - Conway</h1>
       <GamePanel />
       <CellGrid />
     </div>

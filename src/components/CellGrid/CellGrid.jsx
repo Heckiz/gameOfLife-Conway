@@ -18,8 +18,10 @@ export default function CellGrid() {
 
     return (
         <div style={{
+            background:"#34495E",
+            justifyContent:"center",
             display: "grid",
-            gridTemplateColumns: `repeat(${gameConfig.cols}, 25px)`,
+            gridTemplateColumns: `repeat(${gameConfig.cols}, ${95/gameConfig.cols}vw)`,
         }}>
             {
                
@@ -31,6 +33,7 @@ export default function CellGrid() {
                         colIndex={colIndex}
                         life={cols}
                         dispatch={dispatch}
+                        cantRows={gameConfig.rows}
                     />
 
                 )))
