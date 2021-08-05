@@ -5,14 +5,15 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     gameConfig: {
-      rows: 10,
-      cols: 30
+      rows: 30,
+      cols: 50,
+      speed: 300
     },
     cellGrid: [],
     running: false,
+    generations: 0
   },
   reducers: {
-
     // Redux Toolkit allows us to write "mutating" logic in reducers. It
     // doesn't actually mutate the gistate because it uses the Immer library,
     // which detects changes to a "draft state" and produces a brand new
@@ -25,6 +26,8 @@ export const gameSlice = createSlice({
         grid[i] = Array.from(Array(cols), () => false);
       }
       state.cellGrid = grid;
+      state.generations = 0;
+
     },
 
     handleGrid: (state, action) => {
@@ -32,7 +35,9 @@ export const gameSlice = createSlice({
       state.gameConfig.rows = action.payload
       state.gameConfig.cols = parseInt(action.payload) + 20;
     },
-
+    handleSpeed: (state, action) => {
+      state.gameConfig.speed = -action.payload
+    },
     handleLifeCell: (state, action) => {
       const { row, col } = action.payload;
 
@@ -58,11 +63,11 @@ export const gameSlice = createSlice({
       }
 
       state.cellGrid = newGrid;
+      state.generations++;
     }
   }
 })
 
-// Action creators are generated for each case reducer function
-export const { newCellGrid, handleLifeCell, handleRunning, handleGrid, playSimulation } = gameSlice.actions
+export const { newCellGrid, handleLifeCell, handleRunning, handleGrid, handleSpeed, playSimulation } = gameSlice.actions
 
 export default gameSlice.reducer
