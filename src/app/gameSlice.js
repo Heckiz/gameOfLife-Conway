@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { resizeGrid, survivalRules } from './helpers';
+import { oscillatorsData, resizeGrid, survivalRules } from './helpers';
 
 export const gameSlice = createSlice({
   name: 'game',
@@ -27,6 +27,7 @@ export const gameSlice = createSlice({
       };
 
       const gridStorage = JSON.parse(window.localStorage.getItem("cellgrid"));
+
       if (gridStorage && !payload) {
         const { cellGrid, gameConfig, generations } = gridStorage
         state.cellGrid = cellGrid;
@@ -38,6 +39,7 @@ export const gameSlice = createSlice({
       } else {
         state.cellGrid = grid;
         state.generations = 0;
+        window.localStorage.setItem("cellgrid", JSON.stringify(state))
       }
     },
 
@@ -79,10 +81,25 @@ export const gameSlice = createSlice({
       state.cellGrid = newGrid;
       state.generations++;
       window.localStorage.setItem("cellgrid", JSON.stringify(state))
+    },
+
+    drawOscillators: state => {
+      const { cellGrid, gameConfig, generations } = oscillatorsData()
+      state.cellGrid = cellGrid;
+      state.gameConfig.rows = gameConfig.rows
+      state.gameConfig.cols = gameConfig.cols
+      state.generations = generations
     }
   }
 })
 
-export const { newCellGrid, handleLifeCell, handleRunning, handleGrid, handleSpeed, playSimulation } = gameSlice.actions
+export const {
+  newCellGrid,
+  handleLifeCell,
+  handleRunning,
+  handleGrid,
+  handleSpeed,
+  drawOscillators,
+  playSimulation } = gameSlice.actions
 
 export default gameSlice.reducer

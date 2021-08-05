@@ -1,5 +1,5 @@
 import React from 'react'
-import { handleGrid, handleRunning, newCellGrid, handleSpeed, playSimulation } from "../../app/gameSlice";
+import { handleGrid, handleRunning, newCellGrid, handleSpeed, drawOscillators, playSimulation } from "../../app/gameSlice";
 import { useDispatch, useSelector } from 'react-redux'
 import useInterval from '../../common/useInterval';
 
@@ -35,11 +35,17 @@ export default function GamePanel() {
                 <h3>NEXT</h3>
             </button>
 
+            <button style={{ marginRight: "20px" }}
+            onClick={()=>dispatch(drawOscillators())}
+            >
+                <h3>Osilator</h3>
+            </button>
+
             <h2>Generations : {generations}</h2>
             <h3>Grid</h3>
-            <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="10" max="40" step="5" defaultValue={gameConfig.rows} />
+            <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="20" max="50" step="5" value={gameConfig.rows} />
             <h3>Speed</h3>
-            <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" defaultValue={-gameConfig.speed} />
+            <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" value={-gameConfig.speed} />
 
         </div>
     )
