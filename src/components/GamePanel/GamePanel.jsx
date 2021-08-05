@@ -7,8 +7,8 @@ import useInterval from '../../common/useInterval';
 export default function GamePanel() {
     const { gameConfig, running, generations } = useSelector(state => state.gameData);
     const dispatch = useDispatch();
-    
-    useInterval(()=> dispatch(playSimulation()), running ? gameConfig.speed : null )
+
+    useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
 
 
     return (
@@ -23,17 +23,23 @@ export default function GamePanel() {
                 }
             </button>
 
-            <button onClick={() =>{ 
-                dispatch(newCellGrid(gameConfig));
-                if(running) dispatch(handleRunning())
+            <button style={{ marginRight: "20px" }}
+             onClick={() => {
+                dispatch(newCellGrid(true));
+                if (running) dispatch(handleRunning())
             }}>
                 <h3>RESTART</h3>
             </button>
+
+            <button onClick={() => dispatch(playSimulation())}>
+                <h3>NEXT</h3>
+            </button>
+
             <h2>Generations : {generations}</h2>
             <h3>Grid</h3>
-            <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="10" max="40" step="5" defaultValue="30"/>
+            <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="10" max="40" step="5" defaultValue={gameConfig.rows} />
             <h3>Speed</h3>
-            <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range"  min="-800" max="-0" step="50" defaultValue="-300"/>
+            <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" defaultValue={-gameConfig.speed} />
 
         </div>
     )

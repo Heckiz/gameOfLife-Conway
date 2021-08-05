@@ -19,27 +19,40 @@ export const gameSlice = createSlice({
     // which detects changes to a "draft state" and produces a brand new
     // immutable state based off those changes
 
-    newCellGrid: state => {
+    newCellGrid: (state, { payload }) => {
       const { rows, cols } = state.gameConfig;
       const grid = [];
       for (let i = 0; i < rows; i++) {
         grid[i] = Array.from(Array(cols), () => false);
+      };
+
+      const gridStorage = JSON.parse(window.localStorage.getItem("cellgrid"));
+      if (gridStorage && !payload) {
+        const { cellGrid, gameConfig, generations } = gridStorage
+        state.cellGrid = cellGrid;
+        state.gameConfig.rows = gameConfig.rows;
+        state.gameConfig.cols = gameConfig.cols;
+        state.gameConfig.speed = gameConfig.speed;
+        state.generations = generations;
+
+      } else {
+        state.cellGrid = grid;
+        state.generations = 0;
       }
-      state.cellGrid = grid;
-      state.generations = 0;
-
     },
 
-    handleGrid: (state, action) => {
-      state.cellGrid = resizeGrid(state.cellGrid, action.payload);
-      state.gameConfig.rows = action.payload
-      state.gameConfig.cols = parseInt(action.payload) + 20;
+    handleGrid: (state, { payload }) => {
+      state.cellGrid = resizeGrid(state.cellGrid, payload);
+      state.gameConfig.rows = parseInt(payload)
+      state.gameConfig.cols = parseInt(payload) + 20;
     },
-    handleSpeed: (state, action) => {
-      state.gameConfig.speed = -action.payload
+
+    handleSpeed: (state, { payload }) => {
+      state.gameConfig.speed = -payload
     },
-    handleLifeCell: (state, action) => {
-      const { row, col } = action.payload;
+
+    handleLifeCell: (state, { payload }) => {
+      const { row, col } = payload;
 
       let newGrid = state.cellGrid;
       newGrid[row][col] = !state.cellGrid[row][col];
@@ -51,6 +64,7 @@ export const gameSlice = createSlice({
       state.running = !state.running;
 
     },
+
     playSimulation: state => {
       const { cellGrid, gameConfig } = state;
       const { cols, rows } = gameConfig;
@@ -64,6 +78,7 @@ export const gameSlice = createSlice({
 
       state.cellGrid = newGrid;
       state.generations++;
+      window.localStorage.setItem("cellgrid", JSON.stringify(state))
     }
   }
 })

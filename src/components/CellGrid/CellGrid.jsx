@@ -12,7 +12,7 @@ export default function CellGrid() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(newCellGrid(gameConfig));
+        dispatch(newCellGrid(false));
     }, [])
     
 
