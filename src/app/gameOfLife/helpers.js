@@ -1,11 +1,14 @@
 
 export const survivalRules = (grid, rlimit, climit) => {
+
+
+
     const neighboursPositions = [
         [0, 1],
         [0, -1],
         [1, -1],
-        [-1, 1],
-        [1, 1],
+        [-1, 1],     // each element defines the positions that will be moved 
+        [1, 1],      // in rows and columns to find the neighbor
         [-1, -1],
         [1, 0],
         [-1, 0]
@@ -17,6 +20,8 @@ export const survivalRules = (grid, rlimit, climit) => {
 
             let neighbours = 0;
 
+
+            // for each grid position, its neighbors are checked
             neighboursPositions.forEach(([x, y]) => {
                 const newRow = (rowIndex + x + rlimit) % rlimit
                 const newCol = (colIndex + y + climit) % climit
@@ -26,6 +31,7 @@ export const survivalRules = (grid, rlimit, climit) => {
 
             let alive = cols;
 
+            // it is verified if it survives in the next generation
             if (!alive && neighbours === 3) {
                 nextGeneration.push(true)
             }
@@ -36,15 +42,22 @@ export const survivalRules = (grid, rlimit, climit) => {
             }
         }))
 
+
+
+    // returns one-dimensional array
     return nextGeneration;
 }
 
 export const resizeGrid = (grid, size) => {
 
+
+    // a new cell grid is ​​created with the required dimension
     const newGrid = [];
     for (let i = 0; i < size; i++) {
         newGrid.push(Array.from(Array(parseInt(size) + 20), () => false));
     }
+
+    // mapping the current grid and passing the "live cell" positions to the new grid
     grid.map((rows, rowsIndex) =>
         rows.map((cols, colsIndex) => {
             try {
@@ -53,7 +66,7 @@ export const resizeGrid = (grid, size) => {
                 console.log('some cells died after resizing the grid')
             }
         }))
-
+        
     return newGrid;
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { handleLifeCell } from '../../app/gameSlice'
+import { handleLifeCell } from '../../app/gameOfLife/gameOfLifeSlice'
 
 
 

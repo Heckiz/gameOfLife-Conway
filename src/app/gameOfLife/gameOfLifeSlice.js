@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { oscillatorsData, resizeGrid, survivalRules } from './helpers';
 
 export const gameSlice = createSlice({
-  name: 'game',
+  name: 'gameOfLife',
   initialState: {
     gameConfig: {
       rows: 30,
@@ -21,14 +21,18 @@ export const gameSlice = createSlice({
 
     newCellGrid: (state, { payload }) => {
       const { rows, cols } = state.gameConfig;
+
+      // a new empty cell grid is created
       const grid = [];
       for (let i = 0; i < rows; i++) {
         grid[i] = Array.from(Array(cols), () => false);
       };
 
+      // check if there is data in the localStorage
       const gridStorage = JSON.parse(window.localStorage.getItem("cellgrid"));
 
-      if (gridStorage && !payload) {
+      if (gridStorage && payload) { //if the payload of true loads from the useEffect
+
         const { cellGrid, gameConfig, generations } = gridStorage
         state.cellGrid = cellGrid;
         state.gameConfig.rows = gameConfig.rows;
@@ -36,7 +40,7 @@ export const gameSlice = createSlice({
         state.gameConfig.speed = gameConfig.speed;
         state.generations = generations;
 
-      } else {
+      } else { //if it false loads from the restart button
         state.cellGrid = grid;
         state.generations = 0;
         window.localStorage.setItem("cellgrid", JSON.stringify(state))
@@ -70,10 +74,12 @@ export const gameSlice = createSlice({
     playSimulation: state => {
       const { cellGrid, gameConfig } = state;
       const { cols, rows } = gameConfig;
+
       let nextGeneration = survivalRules(cellGrid, parseInt(rows), parseInt(cols));
+
+      // a new grid is created based on a one-dimensional array
       let newGrid = [];
       let key = 0;
-
       for (let i = 0; i < rows; i++) {
         newGrid.push(Array.from(Array(cols), () => nextGeneration[key++]));
       }
@@ -100,6 +106,7 @@ export const {
   handleGrid,
   handleSpeed,
   drawOscillators,
-  playSimulation } = gameSlice.actions
+  playSimulation
+} = gameSlice.actions
 
 export default gameSlice.reducer

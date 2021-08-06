@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react'
 import Cell from './Cell';
-import { newCellGrid } from "../../app/gameSlice";
-import { useSelector, useDispatch } from 'react-redux'
+import { newCellGrid } from "../../app/gameOfLife/gameOfLifeSlice";
+import { useDispatch } from 'react-redux'
 
-export default function CellGrid() {
-
-
-    const { gameConfig, cellGrid } = useSelector(state => state.gameData);
-
+export default function CellGrid({cellGrid, gameConfig}) {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(newCellGrid(false));
+        dispatch(newCellGrid(true));
     }, [])
     
 

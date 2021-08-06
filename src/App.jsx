@@ -1,16 +1,10 @@
 import React from 'react'
-import GamePanel from './components/GamePanel/GamePanel'
-import CellGrid from './components/CellGrid/CellGrid'
-
+import GameOfLife from './pages/GameOfLife'
 
 function App() {
-
-
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>The Game of Life - Conway</h1>
-      <GamePanel />
-      <CellGrid />
+      <GameOfLife/>
     </div>
   )
 }

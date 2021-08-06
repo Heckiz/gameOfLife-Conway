@@ -1,20 +1,28 @@
 import React from 'react'
-import { handleGrid, handleRunning, newCellGrid, handleSpeed, drawOscillators, playSimulation } from "../../app/gameSlice";
-import { useDispatch, useSelector } from 'react-redux'
 import useInterval from '../../common/useInterval';
+import { useDispatch } from 'react-redux'
+import {
+    handleGrid,
+    handleRunning,
+    newCellGrid,
+    handleSpeed,
+    drawOscillators,
+    playSimulation
+} from "../../app/gameOfLife/gameOfLifeSlice";
 
 
-export default function GamePanel() {
-    const { gameConfig, running, generations } = useSelector(state => state.gameData);
+
+export default function GamePanel({ gameConfig, running, generations }) {
+
     const dispatch = useDispatch();
 
     useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
-
 
     return (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
 
             <div>
+
                 <button style={running ? { background: "red" } : { background: "green" }}
                     onClick={() => dispatch(handleRunning())}
                 >
@@ -23,11 +31,12 @@ export default function GamePanel() {
                             ? <h3>START</h3>
                             : <h3>PAUSE</h3>
                     }
+
                 </button>
 
-                <button style={{ background: "blue", color:"white" }}
+                <button style={{ background: "blue", color: "white" }}
                     onClick={() => {
-                        dispatch(newCellGrid(true));
+                        dispatch(newCellGrid(false));
                         if (running) dispatch(handleRunning())
                     }}>
                     <h3>RESTART</h3>
@@ -38,11 +47,12 @@ export default function GamePanel() {
                     <h3>NEXT STEEP</h3>
                 </button>
 
-                <button style={{ background: "yellow",margin: "20px" }}
+                <button style={{ background: "yellow", margin: "20px" }}
                     onClick={() => dispatch(drawOscillators())}
                 >
                     <h3>DRAW OSCILLATORS</h3>
                 </button>
+
             </div>
 
             <h2>Generations : {generations}</h2>
