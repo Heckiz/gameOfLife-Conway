@@ -2,6 +2,7 @@ import React from 'react'
 import GamePanel from '../components/GamePanel/GamePanel'
 import CellGrid from '../components/CellGrid/CellGrid'
 import { useSelector } from 'react-redux'
+import { Box } from '@chakra-ui/react';
 
 export default function GameOfLife() {
     const {
@@ -12,10 +13,10 @@ export default function GameOfLife() {
     } = useSelector(state => state.gameOfLifeData);
 
     return (
-        <div>
+        <Box>
             <h1 style={{ textAlign: "center" }}>The Game of Life - Conway</h1>
             <GamePanel gameConfig={gameConfig} running={running} generations={generations} />
-            <CellGrid cellGrid={cellGrid} gameConfig={gameConfig} />
-        </div>
+            {/* <CellGrid cellGrid={cellGrid} gameConfig={gameConfig} /> */}
+        </Box>
     )
 }
