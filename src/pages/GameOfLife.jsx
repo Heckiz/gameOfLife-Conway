@@ -16,7 +16,7 @@ export default function GameOfLife() {
         <Box>
             <h1 style={{ textAlign: "center" }}>The Game of Life - Conway</h1>
             <GamePanel gameConfig={gameConfig} running={running} generations={generations} />
-            {/* <CellGrid cellGrid={cellGrid} gameConfig={gameConfig} /> */}
+             <CellGrid cellGrid={cellGrid} gameConfig={gameConfig} /> 
         </Box>
     )
 }

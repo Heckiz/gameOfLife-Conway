@@ -9,8 +9,24 @@ import {
     drawOscillators,
     playSimulation
 } from "../../app/gameOfLife/gameOfLifeSlice";
-import { Button, Icon, Grid, Text, Flex, Menu, MenuButton, MenuList, MenuItem, GridItem, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box } from '@chakra-ui/react';
-import { FaPlay, FaPause, FaRedoAlt, FaAngleDoubleRight, FaWrench, FaInfinity, FaChessBoard,FaForward } from "react-icons/fa"
+import { FaPlay, FaPause, FaRedoAlt, FaAngleDoubleRight, FaCogs, FaInfinity, FaChessBoard, FaForward } from "react-icons/fa"
+import {
+    Button,
+    Icon,
+    Grid,
+    Text,
+    Flex,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    GridItem,
+    Slider,
+    SliderTrack,
+    SliderFilledTrack,
+    SliderThumb,
+    Box
+} from '@chakra-ui/react';
 
 
 
@@ -21,19 +37,19 @@ export default function GamePanel({ gameConfig, running, generations }) {
     useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
 
     return (
-        <Flex justifyContent="center" >
+        <Flex justifyContent="center">
 
-            <Flex p="5"
+            <Flex px="5" pb="1"
                 w={{ base: "100%", lg: "70vw" }}
-
+                alignItems="center"
             >
 
                 <Grid
-                    gap={{ base: "6", lg: "1" }}
+                    gap={{ base: "8", lg: "1" }}
                     w="60%" p="5"
                     templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
                 >
-                    <Button
+                    <Button  //PLAY/PAUSE
                         w={{ base: "0%", sm: "70%", lg: "50%" }} transform="scale(1.5)"
                         backgroundColor={running ? "red.300" : "green.300"}
                         borderRadius="full"
@@ -51,7 +67,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                     </Button>
 
-                    <Button
+                    <Button //RESTART
                         w={{ base: "0%", sm: "70%", lg: "50%" }}
                         backgroundColor="blue.300" transform="scale(1.5)"
                         _hover={{
@@ -70,7 +86,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                     </Button>
 
-                    <Button
+                    <Button //NEXT-STEEP
                         w={{ base: "0%", sm: "70%", lg: "50%" }}
                         backgroundColor="yellow.300" transform="scale(1.5)"
                         _hover={{
@@ -82,7 +98,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
                         <Icon as={FaForward} />
                     </Button>
 
-                    <Button
+                    <Button //DRAW OSCILLATORS
                         w={{ base: "0%", sm: "70%", lg: "50%" }}
                         backgroundColor="gray.300" transform="scale(1.5)"
                         _hover={{
@@ -95,14 +111,13 @@ export default function GamePanel({ gameConfig, running, generations }) {
                         <Icon as={FaInfinity} />
                     </Button>
 
-
                 </Grid>
 
-                <Grid w="40%"
-                >
+                <Grid w="40%">
+
                     <GridItem
-                        borderBottom="2px solid red"
-                        d={{ base: "grid", lg: "flex" }} mb="5">
+                        borderBottom="2px solid #6C3483"
+                        d={{ base: "grid", lg: "flex" }} mb="3">
 
                         <Text textAlign="center"
                             as="samp" fontSize={{ base: "xl", sm: "4xl" }}
@@ -116,48 +131,77 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                     </GridItem>
 
-                    <Menu >
-                        <MenuButton >
-                            <Button w="90%"
-                                transform={{ base: "scale(1.2)" }} w="max-content"
-                                _hover={{
-                                    backgroundColor: "teal.500",
-                                }}
-                                borderRadius="10"
-                                backgroundColor="teal.300"
-                            >
-                                <Icon fontSize="30px" as={FaWrench} />
-                            </Button>
+                    {/* config option on small devices */}
+                    <GridItem display={{ base: "block", lg: "none" }}
+                        mx="auto" onClick={() => { if (running) { dispatch(handleRunning()) } }} >
 
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem>
-                                <Text as="cite" px="2">GRID</Text>
-                                <Slider aria-label="slider-ex-4" defaultValue={30}>
-                                    <SliderTrack bg="red.100">
+                        <Menu>
+                            <MenuButton w="90px"
+                                borderRadius="5"
+                                backgroundColor="#A9CCE3">
+                                <Icon fontSize="40px" as={FaCogs} />
+                            </MenuButton>
 
-                                        <SliderFilledTrack bg="tomato" />
-                                    </SliderTrack>
-                                    <SliderThumb boxSize={6}>
-                                        <Box color="tomato" as={FaChessBoard} />
-                                    </SliderThumb>
-                                </Slider>
-                            </MenuItem>
-                            <MenuItem>
-                                <Text as="cite" px="2">SPEED</Text>
-                                <Slider aria-label="slider-ex-4" defaultValue={30}>
-                                    <SliderTrack bg="red.100">
+                            <MenuList>
+                                <MenuItem>
+                                    <Text as="cite" px="2">GRID</Text>
+                                    <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))}
+                                        defaultValue={gameConfig.rows} min={20} max={50} step={5}>
+                                        <SliderTrack bg="red.100">
+                                            <SliderFilledTrack bg="tomato" />
+                                        </SliderTrack>
+                                        <SliderThumb boxSize={6}>
+                                            <Box color="tomato" as={FaChessBoard} />
+                                        </SliderThumb>
+                                    </Slider>
+                                </MenuItem>
 
-                                        <SliderFilledTrack bg="blue.300" />
-                                    </SliderTrack>
-                                    <SliderThumb boxSize={6}>
-                                        <Box color="blue.400" as={FaAngleDoubleRight} />
-                                    </SliderThumb>
-                                </Slider>
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>
+                                <MenuItem>
+                                    <Text as="cite" px="2">SPEED</Text>
+                                    <Slider onChange={(value) => dispatch(handleSpeed(value))}
+                                        defaultValue={-gameConfig.speed} min={-800} max={-0} step={50}>
+                                        <SliderTrack bg="red.100">
+                                            <SliderFilledTrack bg="blue.300" />
+                                        </SliderTrack>
+                                        <SliderThumb boxSize={6}>
+                                            <Box color="blue.400" as={FaAngleDoubleRight} />
+                                        </SliderThumb>
+                                    </Slider>
+                                </MenuItem>
+                            </MenuList>
 
+                        </Menu>
+
+                    </GridItem>
+
+                    {/* config option on large devices */}
+                    <GridItem display={{ base: "none", lg: "flex" }} justifyContent="space-around">
+
+                        <Box w="40%">
+                            <Text as="cite" px="2">GRID</Text>
+                            <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))} defaultValue={gameConfig.rows} min={20} max={50} step={5}>
+                                <SliderTrack bg="red.100">
+                                    <SliderFilledTrack bg="tomato" />
+                                </SliderTrack>
+                                <SliderThumb boxSize={6}>
+                                    <Box color="tomato" as={FaChessBoard} />
+                                </SliderThumb>
+                            </Slider>
+                        </Box>
+
+                        <Box w="40%">
+                            <Text as="cite" px="2">SPEED</Text>
+                            <Slider onChange={(value) => dispatch(handleSpeed(value))} defaultValue={-gameConfig.speed} min={-800} max={-0} step={50}>
+                                <SliderTrack bg="red.100">
+                                    <SliderFilledTrack bg="blue.300" />
+                                </SliderTrack>
+                                <SliderThumb boxSize={10}>
+                                    <Box color="blue.400" as={FaAngleDoubleRight} />
+                                </SliderThumb>
+                            </Slider>
+                        </Box>
+
+                    </GridItem>
 
                 </Grid>
 
@@ -166,32 +210,3 @@ export default function GamePanel({ gameConfig, running, generations }) {
         </Flex>
     )
 }
-
-
-{/* <Button
-          transform="scale(1.5)" p="2"
-       _hover={{
-           backgroundColor: "tomato",
-           transform: "scale(1.3)"
-       }}
-       borderRadius="10"
-        backgroundColor="papayawhip"
-        onClick={() => dispatch(drawOscillators())}
-    >
-        <Text as="samp" fontSize="xs">DRAW OSCILLATORS</Text>
-    </Button> */}
-
-{/* <Box>
-    <h2>Generations : {generations}</h2>
-
-    <div>
-        <h3>Grid</h3>
-        <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="20" max="50" step="5" value={gameConfig.rows} />
-
-    </div>
-    <div>
-        <h3>Speed</h3>
-        <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" value={-gameConfig.speed} />
-
-    </div>
-</Box> */}
