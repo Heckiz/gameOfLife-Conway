@@ -37,10 +37,10 @@ export default function GamePanel({ gameConfig, running, generations }) {
     useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
 
     return (
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" > 
 
             <Flex px="5" pb="1"
-                w={{ base: "100%", lg: "70vw" }}
+                w={{ base: "100%", lg: "70vw" }} h="30vh"
                 alignItems="center"
             >
 

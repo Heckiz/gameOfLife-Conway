@@ -2,25 +2,22 @@ import React, { useEffect } from 'react'
 import Cell from './Cell';
 import { newCellGrid } from "../../app/gameOfLife/gameOfLifeSlice";
 import { useDispatch } from 'react-redux'
+import { Box } from '@chakra-ui/react';
 
-export default function CellGrid({cellGrid, gameConfig}) {
+export default function CellGrid({ cellGrid, gameConfig }) {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(newCellGrid(true));
     }, [])
-    
+
 
     return (
-        <div style={{
-            background:"#34495E",
-            justifyContent:"center",
-            display: "grid",
-            gridTemplateColumns: `repeat(${gameConfig.cols}, ${95/gameConfig.cols}vw)`,
-        }}>
+        <Box h="60vh" d="grid" justifyContent="center" overflow="hidden"
+            gridTemplateColumns={{ base: `repeat(${gameConfig.cols}, ${100 / gameConfig.cols}%)`, lg: `repeat(${gameConfig.cols}, ${70 / gameConfig.cols}%)` }} >
             {
-               
+
                 cellGrid.map((rows, rowIndex) => rows.map((cols, colIndex) => (
 
                     <Cell
@@ -34,6 +31,6 @@ export default function CellGrid({cellGrid, gameConfig}) {
 
                 )))
             }
-        </div>
+        </Box>
     )
 }

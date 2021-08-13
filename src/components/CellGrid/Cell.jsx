@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react'
 import { handleLifeCell } from '../../app/gameOfLife/gameOfLifeSlice'
 
@@ -11,18 +12,11 @@ export default function Cell({ dispatch, colIndex, rowIndex, life, cantRows }) {
     }
 
     return (
-        <div
-            style={styleCell(life, cantRows)}
+        <Box
+            height={{base: `${60/cantRows}vh`}} border="1px solid black" borderRadius="5%"
+            backgroundColor={life ? '#FADBD8' : '#1C2833'}
             onClick={() => handleCell(rowIndex, colIndex)}
         />
     )
 }
 
-const styleCell = (life, cantRows) => {
-    return {
-        height: `${75/cantRows}vh`,
-        border: '1px solid black',
-        borderRadius:"5%",
-        background: life ? '#FADBD8' : '#1C2833'
-    }
-}
