@@ -9,6 +9,8 @@ import {
     drawOscillators,
     playSimulation
 } from "../../app/gameOfLife/gameOfLifeSlice";
+import { Box, Button, Icon, Grid, Text, GridItem } from '@chakra-ui/react';
+import { FaPlay, FaPause, FaRedoAlt, FaAngleDoubleRight } from "react-icons/fa"
 
 
 
@@ -19,56 +21,92 @@ export default function GamePanel({ gameConfig, running, generations }) {
     useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
 
     return (
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <Box border="2px solid red" display="flex" justifyContent="space-around" w="100vw">
 
-            <div>
+            <Grid w="60vw"
+                gap={6} p="5" 
+                templateColumns="repeat(3, 1fr)"
+            >
 
-                <button style={running ? { background: "red" } : { background: "green" }}
+                <Button
+                    w={{ base: "0%", sm: "50%" }} transform="scale(1.5)"
+                    backgroundColor={running ? "red.300" : "green.300"}
+                    borderRadius="full"
+                    _hover={{
+                        backgroundColor: running ? "red.400" : "green.400",
+                        transform: "scale(1.3)"
+                    }}
                     onClick={() => dispatch(handleRunning())}
                 >
                     {
                         !running
-                            ? <h3>START</h3>
-                            : <h3>PAUSE</h3>
+                            ? <Icon as={FaPlay} />
+                            : <Icon as={FaPause} />
                     }
 
-                </button>
+                </Button>
 
-                <button style={{ background: "blue", color: "white" }}
+                <Button
+                    w={{ base: "0%", sm: "50%" }} transform="scale(1.5)"
+                    backgroundColor="blue.300"
+                    _hover={{
+                        backgroundColor: "blue.400",
+                        transform: "scale(1.3)"
+                    }}
+                    borderRadius="100"
+
                     onClick={() => {
                         dispatch(newCellGrid(false));
                         if (running) dispatch(handleRunning())
                     }}>
-                    <h3>RESTART</h3>
-                </button>
+                    <Icon as={FaRedoAlt} />
+                </Button>
 
-                <button style={{ background: "tomato" }}
+                <Button
+                    w={{ base: "0%", sm: "50%" }} transform="scale(1.5)"
+                    backgroundColor="yellow.300"
+                    _hover={{
+                        backgroundColor: "yellow.400",
+                        transform: "scale(1.3)"
+                    }}
+                    borderRadius="100"
                     onClick={() => dispatch(playSimulation())}>
-                    <h3>NEXT STEEP</h3>
-                </button>
+                    <Icon as={FaAngleDoubleRight} />
+                </Button>
 
-                <button style={{ background: "yellow", margin: "20px" }}
+            </Grid>
+
+                    <Box w="30vw">
+                        <h1>as</h1>
+                    </Box>
+            {/* <Button
+                      transform="scale(1.5)" p="2"
+                   _hover={{
+                       backgroundColor: "tomato",
+                       transform: "scale(1.3)"
+                   }}
+                   borderRadius="10"
+                    backgroundColor="papayawhip"
                     onClick={() => dispatch(drawOscillators())}
                 >
-                    <h3>DRAW OSCILLATORS</h3>
-                </button>
+                    <Text as="samp" fontSize="xs">DRAW OSCILLATORS</Text>
+                </Button> */}
 
-            </div>
+            {/* <Box>
+                <h2>Generations : {generations}</h2>
 
-            <h2>Generations : {generations}</h2>
+                <div>
+                    <h3>Grid</h3>
+                    <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="20" max="50" step="5" value={gameConfig.rows} />
 
-            <div>
-                <h3>Grid</h3>
-                <input onChange={(e) => dispatch(handleGrid(e.target.value))} type="range" min="20" max="50" step="5" value={gameConfig.rows} />
+                </div>
+                <div>
+                    <h3>Speed</h3>
+                    <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" value={-gameConfig.speed} />
 
-            </div>
-            <div>
-                <h3>Speed</h3>
-                <input onChange={(e) => dispatch(handleSpeed(e.target.value))} type="range" min="-800" max="-0" step="50" value={-gameConfig.speed} />
-
-            </div>
-
-        </div>
+                </div>
+            </Box> */}
+        </Box>
     )
 }
 
