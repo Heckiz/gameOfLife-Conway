@@ -28,8 +28,6 @@ import {
     Box
 } from '@chakra-ui/react';
 
-
-
 export default function GamePanel({ gameConfig, running, generations }) {
 
     const dispatch = useDispatch();
@@ -39,7 +37,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
     return (
         <Flex justifyContent="center" > 
 
-            <Flex px="5" pb="1"
+            <Flex px="5" pb="1" bg="#F9E8B5"
                 w={{ base: "100%", lg: "70vw" }} h="30vh"
                 alignItems="center"
             >
@@ -144,7 +142,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                             <MenuList>
                                 <MenuItem>
-                                    <Text as="cite" px="2">GRID</Text>
+                                    <Text as="cite" px="2">CELL GRID</Text>
                                     <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))}
                                         defaultValue={gameConfig.rows} min={20} max={50} step={5}>
                                         <SliderTrack bg="red.100">
@@ -210,3 +208,4 @@ export default function GamePanel({ gameConfig, running, generations }) {
         </Flex>
     )
 }
+
