@@ -17,7 +17,7 @@ export default function GameOfLife() {
     return (
         <Box>
             <Box
-                d="flex" justifyContent="center" boxShadow="2xl"
+                d="flex" h="5vh" justifyContent="center" alignItems="center" boxShadow="2xl"
             >
                 <Text
                     px="4" bg="#F9E8B5"

@@ -9,7 +9,7 @@ import {
     drawOscillators,
     playSimulation
 } from "../../app/gameOfLife/gameOfLifeSlice";
-import { FaPlay, FaPause, FaRedoAlt, FaAngleDoubleRight, FaCogs, FaInfinity, FaChessBoard, FaForward } from "react-icons/fa"
+import { FaPlay, FaSkullCrossbones, FaChild, FaBaby, FaInfoCircle, FaPause, FaRedoAlt, FaAngleDoubleRight, FaCogs, FaInfinity, FaChessBoard, FaForward } from "react-icons/fa"
 import {
     Button,
     Icon,
@@ -25,23 +25,37 @@ import {
     SliderTrack,
     SliderFilledTrack,
     SliderThumb,
-    Box
+    Box,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    List,
+    ListItem,
+    ListIcon
 } from '@chakra-ui/react';
 
 export default function GamePanel({ gameConfig, running, generations }) {
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const dispatch = useDispatch();
 
     useInterval(() => dispatch(playSimulation()), running ? gameConfig.speed : null)
 
     return (
-        <Flex justifyContent="center" > 
+        <Flex justifyContent="center" h="30vh">
 
             <Flex px="5" pb="1" bg="#F9E8B5"
                 w={{ base: "100%", lg: "70vw" }} h="30vh"
                 alignItems="center"
             >
 
+                {/* CONTROL BUTTONS */}
                 <Grid
                     gap={{ base: "8", lg: "1" }}
                     w="60%" p="5"
@@ -111,6 +125,8 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                 </Grid>
 
+
+
                 <Grid w="40%">
 
                     <GridItem
@@ -130,11 +146,16 @@ export default function GamePanel({ gameConfig, running, generations }) {
                     </GridItem>
 
                     {/* config option on small devices */}
-                    <GridItem display={{ base: "block", lg: "none" }}
-                        mx="auto" onClick={() => { if (running) { dispatch(handleRunning()) } }} >
+
+                    <GridItem
+                        display={{ base: "flex", lg: "none" }} mx="auto"
+                        onClick={() => { if (running) { dispatch(handleRunning()) } }}
+                    >
 
                         <Menu>
-                            <MenuButton w="90px"
+
+                            <MenuButton
+                                w="90px"
                                 borderRadius="5"
                                 backgroundColor="#A9CCE3">
                                 <Icon fontSize="40px" as={FaCogs} />
@@ -143,8 +164,8 @@ export default function GamePanel({ gameConfig, running, generations }) {
                             <MenuList>
                                 <MenuItem>
                                     <Text as="cite" px="2">CELL GRID</Text>
-                                    <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))}
-                                        defaultValue={gameConfig.rows} min={20} max={50} step={5}>
+                                    <Slider onChange={(value) => dispatch(handleGrid(value))}
+                                        value={gameConfig.rows} min={20} max={50} step={5}>
                                         <SliderTrack bg="red.100">
                                             <SliderFilledTrack bg="tomato" />
                                         </SliderTrack>
@@ -157,7 +178,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
                                 <MenuItem>
                                     <Text as="cite" px="2">SPEED</Text>
                                     <Slider onChange={(value) => dispatch(handleSpeed(value))}
-                                        defaultValue={-gameConfig.speed} min={-800} max={-0} step={50}>
+                                        value={-gameConfig.speed} min={-800} max={-0} step={50}>
                                         <SliderTrack bg="red.100">
                                             <SliderFilledTrack bg="blue.300" />
                                         </SliderTrack>
@@ -172,12 +193,14 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                     </GridItem>
 
+
                     {/* config option on large devices */}
+
                     <GridItem display={{ base: "none", lg: "flex" }} justifyContent="space-around">
 
                         <Box w="40%">
-                            <Text as="cite" px="2">GRID</Text>
-                            <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))} defaultValue={gameConfig.rows} min={20} max={50} step={5}>
+                            <Text as="cite" px="2">CELL GRID</Text>
+                            <Slider aria-label="slider-ex-1" onChange={(value) => dispatch(handleGrid(value))} value={gameConfig.rows} min={20} max={50} step={5}>
                                 <SliderTrack bg="red.100">
                                     <SliderFilledTrack bg="tomato" />
                                 </SliderTrack>
@@ -189,7 +212,7 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                         <Box w="40%">
                             <Text as="cite" px="2">SPEED</Text>
-                            <Slider onChange={(value) => dispatch(handleSpeed(value))} defaultValue={-gameConfig.speed} min={-800} max={-0} step={50}>
+                            <Slider onChange={(value) => dispatch(handleSpeed(value))} value={-gameConfig.speed} min={-800} max={-0} step={50}>
                                 <SliderTrack bg="red.100">
                                     <SliderFilledTrack bg="blue.300" />
                                 </SliderTrack>
@@ -201,7 +224,68 @@ export default function GamePanel({ gameConfig, running, generations }) {
 
                     </GridItem>
 
+
+
+                    <GridItem
+                        pt="2" d="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Button bg="teal.200"
+                            onClick={onOpen} mx="3"
+                            w={{ base: "90px", lg: "max-content" }}
+                        >
+                            <Icon as={FaInfoCircle}
+                                fontSize={{ base: "2xl", lg: "md" }} />
+
+                            <Text
+                                d={{ base: "none", lg: "block" }}
+                                p="1" as="samp"
+                            >
+                                RULES OF GAME
+
+                            </Text>
+
+                        </Button>
+
+                        <Modal isOpen={isOpen} onClose={onClose} >
+
+                            <ModalOverlay />
+                            <ModalContent bg="#1C2833" mx="2">
+                                <ModalHeader textAlign="center" color="teal.300" as="samp">RULES OF SURVIVAL</ModalHeader>
+                                <ModalCloseButton color="white" fontSize="lg" />
+                                <ModalBody color="white" >
+                                    <List spacing={3}>
+                                        <ListItem>
+                                            <ListIcon as={FaSkullCrossbones} color="red.300"/>
+                                            Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListIcon as={FaChild} color="green.200"/>
+                                            Any live cell with two or three live neighbours lives on to the next generation.
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListIcon as={FaSkullCrossbones}  color="red.300"/>
+                                            Any live cell with more than three live neighbours dies, as if by overpopulation.
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListIcon as={FaBaby} color="green.200" />
+                                            Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+                                        </ListItem>
+                                    </List>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                    <Button variant="link">+info</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                    </GridItem>
+
                 </Grid>
+
+
+
 
 
             </Flex>

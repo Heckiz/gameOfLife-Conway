@@ -11,7 +11,7 @@ from {  transform: scale(0.9);}
 to { transform: scale(1.0); }`
 
     return (
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" h="5vh">
             <Box color="#FADBD8" bg="#1C2833" d="flex" justifyContent="center" w={{ base: "100vw", lg: "70vw" }} h="100%" overflow="hidden">
                 <HStack animation={`${animateMobile} infinite 15s alternate`}
                     spacing="4rem" >
@@ -19,7 +19,7 @@ to { transform: scale(1.0); }`
                         w="max-content" d="flex"
                         alignItems="center"
                     >
-                        <Icon as={AiFillLinkedin} mr="1" fontSize={{base:"4xl", md:"xl"}} />
+                        <Icon as={AiFillLinkedin} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
@@ -31,7 +31,7 @@ to { transform: scale(1.0); }`
                         w="max-content" d="flex"
                         alignItems="center"
                     >
-                        <Icon as={AiFillGithub} mr="1" fontSize={{base:"3xl", md:"xl"}} />
+                        <Icon as={AiFillGithub} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
@@ -43,7 +43,7 @@ to { transform: scale(1.0); }`
                         w="max-content" d="flex"
                         alignItems="center"
                     >
-                        <Icon as={AiFillMail} mr="1" fontSize={{base:"3xl", md:"xl"}} />
+                        <Icon as={AiFillMail} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
