@@ -1,4 +1,4 @@
-import { Text, Flex, keyframes, Box, HStack, Icon } from '@chakra-ui/react'
+import { Text, Flex, keyframes, Box, HStack, Icon, Link } from '@chakra-ui/react'
 import { AiFillGithub, AiFillLinkedin, AiFillMail } from "react-icons/ai";
 
 import React from 'react'
@@ -15,42 +15,39 @@ to { transform: scale(1.0); }`
             <Box color="#FADBD8" bg="#1C2833" d="flex" justifyContent="center" w={{ base: "100vw", lg: "70vw" }} h="100%" overflow="hidden">
                 <HStack animation={`${animateMobile} infinite 15s alternate`}
                     spacing="4rem" >
-                    <Box
-                        w="max-content" d="flex"
-                        alignItems="center"
-                    >
+                  <Link href="https://www.linkedin.com/in/fabo-romero/" isExternal  w="max-content" d="flex"
+                        alignItems="center">
                         <Icon as={AiFillLinkedin} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
                             as="kbd">/fabo-romero</Text>
 
-                    </Box>
+                    </Link>
 
-                    <Box
-                        w="max-content" d="flex"
-                        alignItems="center"
-                    >
+                    <Link href="https://github.com/Heckiz/gameOfLife-Conway" isExternal  w="max-content" d="flex"
+                        alignItems="center">
+
                         <Icon as={AiFillGithub} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
                             as="kbd">/Heckiz</Text>
 
-                    </Box>
+                    </Link>
 
-                    <Box
-                        w="max-content" d="flex"
-                        alignItems="center"
-                    >
+                    <Link href="mailto:fabo.romero97@gmail.com" isExternal  w="max-content" d="flex"
+                        alignItems="center">
+
+
                         <Icon as={AiFillMail} mr="1" fontSize={{base:"2xl", md:"xl"}} />
                         <Text
                             fontSize={{ base: "sm", md: "lg", lg: "xl" }}
                             d={{ base: "none", md: "block" }}
                             as="kbd">fabo.romero97@gmail.com</Text>
 
-                    </Box>
                   
+                    </Link>
 
                 </HStack >
 

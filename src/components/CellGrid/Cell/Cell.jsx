@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react'
-import { handleLifeCell } from '../../app/gameOfLife/gameOfLifeSlice'
+import { handleLifeCell } from '../../../app/gameOfLife/gameOfLifeSlice'
 
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Cell from './Cell';
+import Cell from './Cell/Cell';
 import { newCellGrid } from "../../app/gameOfLife/gameOfLifeSlice";
 import { useDispatch } from 'react-redux'
 import { Box } from '@chakra-ui/react';
